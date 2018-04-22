@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Random;
 
 public class Tube {
-    private Texture topTube, bottomTube;
+    private Texture topTube, bottomTube;        //TODO Use static textures to save memory.
     private Vector2 posTopTube, posBotTube;
     private Random randomPos;
     private Rectangle boundsTop, boundsBot;
@@ -53,5 +53,10 @@ public class Tube {
 
     public boolean collide(Rectangle player) {
         return player.overlaps(boundsTop) || player.overlaps(boundsBot);
+    }
+
+    public void dispose(){
+        topTube.dispose();
+        bottomTube.dispose();
     }
 }
