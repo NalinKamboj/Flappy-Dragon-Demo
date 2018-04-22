@@ -1,5 +1,6 @@
 package com.boltinc.flappydragon.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boltinc.flappydragon.FlappyDemo;
@@ -17,13 +18,16 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-
+        if (Gdx.input.justTouched()){
+            mGameStateManager.setState(new PlayState(mGameStateManager));
+            dispose();
+        }
     }
 
     @Override
     public void update(float deltaTime) {
         handleInput();
-        
+
     }
 
     @Override
