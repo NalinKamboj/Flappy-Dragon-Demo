@@ -1,6 +1,7 @@
-package com.boltinc.flappydragon.sprite;
+package com.boltinc.flappydragon.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -11,17 +12,20 @@ public class Bird {
     private Vector3 mVelocity;
 
     private Rectangle bounds;       //Bird hit-box
+    private Texture animationTexture;
 
-    private Texture birdTexture;
+    private Animation birdAnimation;
 
     public Bird(int x, int y) {
         mPosition = new Vector3(x, y, 0);
         mVelocity = new Vector3(0,0,0);
-        birdTexture = new Texture("bird.png");
-        bounds = new Rectangle(x, y, birdTexture.getWidth(), birdTexture.getHeight());
+        animationTexture = new Texture("bird_animation.png");
+        birdAnimation = new Animation(new TextureRegion(animationTexture), 3, 0.5f);
+        bounds = new Rectangle(x, y, animationTexture.getWidth()/3, animationTexture.getHeight());
     }
 
     public void update(float dt) {
+        birdAnimation.update(dt);
         if(mPosition.y > 0)
             mVelocity.add(0, GRAVITY, 0);
         mVelocity.scl(dt);
@@ -36,8 +40,8 @@ public class Bird {
         return mPosition;
     }
 
-    public Texture getBirdTexture() {
-        return birdTexture;
+    public TextureRegion getBirdTexture() {
+        return birdAnimation.getFrame();
     }
 
     public void jump() {
@@ -49,6 +53,6 @@ public class Bird {
     }
 
     public void dispose(){
-        birdTexture.dispose();
+        animationTexture.dispose();
     }
 }

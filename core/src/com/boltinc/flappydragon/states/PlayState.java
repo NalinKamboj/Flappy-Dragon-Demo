@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.boltinc.flappydragon.FlappyDemo;
-import com.boltinc.flappydragon.sprite.Bird;
-import com.boltinc.flappydragon.sprite.Tube;
+import com.boltinc.flappydragon.sprites.Bird;
+import com.boltinc.flappydragon.sprites.Tube;
 
 public class PlayState extends State{
     private static final int TUBE_SPACING = 125;
@@ -16,7 +16,7 @@ public class PlayState extends State{
 
     private Bird mBird;
     private Texture mPlayBackground;
-    private Texture ground;
+    private Texture ground;     //TODO add hitbox for ground! Priority: high
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;

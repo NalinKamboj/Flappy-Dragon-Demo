@@ -1,4 +1,4 @@
-package com.boltinc.flappydragon.sprite;
+package com.boltinc.flappydragon.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
