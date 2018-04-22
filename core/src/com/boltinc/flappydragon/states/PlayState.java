@@ -10,7 +10,7 @@ import com.boltinc.flappydragon.sprite.Tube;
 
 public class PlayState extends State{
     private static final int TUBE_SPACING = 125;
-    private static final int TUBE_COUNT = 10;
+    private static final int TUBE_COUNT = 3;
 
     private Bird mBird;
     private Texture mPlayBackground;
@@ -23,7 +23,7 @@ public class PlayState extends State{
         mPlayBackground = new Texture("background.png");
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
         mTubes = new Array<Tube>();
-        for(int i=0; i <= TUBE_COUNT; i++) {
+        for(int i=0; i < TUBE_COUNT; i++) {
             mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
     }
@@ -42,8 +42,11 @@ public class PlayState extends State{
         //Make camera follow the bird
         cam.position.x = mBird.getPosition().x + 80;        //offset camera a little
         for(Tube tube: mTubes) {
-            if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.TUBE_WIDTH) {
+            if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
+            }
+            if(tube.collide(mBird.getBounds())){
+                mGameStateManager.setState(new PlayState(mGameStateManager));
             }
         }
         cam.update();

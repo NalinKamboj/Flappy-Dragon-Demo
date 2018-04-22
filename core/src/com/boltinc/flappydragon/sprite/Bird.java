@@ -1,6 +1,7 @@
 package com.boltinc.flappydragon.sprite;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Bird {
@@ -9,6 +10,7 @@ public class Bird {
     private Vector3 mPosition;
     private Vector3 mVelocity;
 
+    private Rectangle bounds;       //Bird hit-box
 
     private Texture birdTexture;
 
@@ -16,6 +18,7 @@ public class Bird {
         mPosition = new Vector3(x, y, 0);
         mVelocity = new Vector3(0,0,0);
         birdTexture = new Texture("bird.png");
+        bounds = new Rectangle(x, y, birdTexture.getWidth(), birdTexture.getHeight());
     }
 
     public void update(float dt) {
@@ -26,6 +29,7 @@ public class Bird {
         if(mPosition.y<0)
             mPosition.y = 0;
         mVelocity.scl(1/dt);
+        bounds.setPosition(mPosition.x, mPosition.y);
     }
 
     public Vector3 getPosition() {
@@ -38,5 +42,9 @@ public class Bird {
 
     public void jump() {
         mVelocity.y = 250;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

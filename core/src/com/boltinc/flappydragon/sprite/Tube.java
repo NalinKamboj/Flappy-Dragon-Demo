@@ -47,5 +47,11 @@ public class Tube {
     public void reposition(float x) {
         posTopTube.set(x, randomPos.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);      //Repositioning the tube which has gone out of the viewport
         posBotTube.set(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
+        boundsTop.setPosition(posTopTube.x, posTopTube.y);
+        boundsBot.setPosition(posBotTube.x, posBotTube.y);
+    }
+
+    public boolean collide(Rectangle player) {
+        return player.overlaps(boundsTop) || player.overlaps(boundsBot);
     }
 }
