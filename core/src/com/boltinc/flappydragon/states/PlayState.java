@@ -12,7 +12,7 @@ import com.boltinc.flappydragon.sprites.Tube;
 public class PlayState extends State{
     private static final int TUBE_SPACING = 125;
     private static final int TUBE_COUNT = 3;
-    private static final int GROUND_Y_OFFSET = -30;
+    private static final int GROUND_Y_OFFSET = -50;
 
     private Bird mBird;
     private Texture mPlayBackground;
@@ -24,11 +24,13 @@ public class PlayState extends State{
     public PlayState(GameStateManager gameStateManager) {
         super(gameStateManager);
         mBird = new Bird(50, 300);
+        mPlayBackground = new Texture("background.png");
+        cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
+
         ground = new Texture("ground.png");
         groundPos1 = new Vector2(cam.position.x - (cam.viewportWidth/2), GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - (cam.viewportWidth/2)) + ground.getWidth(),GROUND_Y_OFFSET);
-        mPlayBackground = new Texture("background.png");
-        cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
+
         mTubes = new Array<Tube>();
         for(int i=0; i < TUBE_COUNT; i++) {
             mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
@@ -58,6 +60,9 @@ public class PlayState extends State{
                 mGameStateManager.setState(new PlayState(mGameStateManager));
             }
         }
+
+        if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
+            mGameStateManager.setState(new PlayState(mGameStateManager));
         cam.update();
     }
 
@@ -67,12 +72,15 @@ public class PlayState extends State{
         spriteBatch.begin();
         spriteBatch.draw(mPlayBackground, cam.position.x-(cam.viewportWidth/2), 0);
         spriteBatch.draw(mBird.getBirdTexture(), mBird.getPosition().x, mBird.getPosition().y);
-        spriteBatch.draw(ground, groundPos1.x, groundPos1.y);           //TODO Ground is currently behind all tubes. Change it to appear on top of all tubes.
-        spriteBatch.draw(ground, groundPos2.x, groundPos2.y);
+
         for(Tube tube: mTubes) {
             spriteBatch.draw(tube.getTopTube(), tube.getPosTopTube().x, tube.getPosTopTube().y);
             spriteBatch.draw(tube.getBottomTube(), tube.getPosBotTube().x, tube.getPosBotTube().y);
         }
+
+        spriteBatch.draw(ground, groundPos1.x, groundPos1.y);           //TODO Ground is currently behind all tubes. Change it to appear on top of all tubes.
+        spriteBatch.draw(ground, groundPos2.x, groundPos2.y);
+
         spriteBatch.end();
     }
 
