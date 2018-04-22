@@ -57,12 +57,12 @@ public class PlayState extends State{
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
             }
             if(tube.collide(mBird.getBounds())){
-                mGameStateManager.setState(new PlayState(mGameStateManager));
+                mGameStateManager.setState(new GameOverState(mGameStateManager));
             }
         }
 
         if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
-            mGameStateManager.setState(new PlayState(mGameStateManager));
+            mGameStateManager.setState(new GameOverState(mGameStateManager));
         cam.update();
     }
 

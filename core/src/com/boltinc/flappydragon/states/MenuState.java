@@ -23,7 +23,7 @@ public class MenuState extends State {
     public void handleInput() {
         if (Gdx.input.justTouched()){
             Vector3 temp = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            cam.unproject(temp);        //Translates point given in screen coordinates to world space. 
+            cam.unproject(temp);        //Translates point given in screen coordinates to world space.
             Rectangle playButtonBounds = new Rectangle(cam.position.x - playButton.getWidth()/2, cam.position.y, playButton.getWidth(), playButton.getHeight());
             if(playButtonBounds.contains(temp.x, temp.y)) {
                 mGameStateManager.setState(new PlayState(mGameStateManager));
@@ -34,7 +34,6 @@ public class MenuState extends State {
     @Override
     public void update(float deltaTime) {
         handleInput();
-
     }
 
     @Override
