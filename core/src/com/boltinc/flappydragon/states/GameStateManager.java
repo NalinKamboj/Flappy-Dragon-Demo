@@ -1,4 +1,4 @@
-package com.boltinc.flappydragon.States;
+package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -31,4 +31,6 @@ public class GameStateManager {
     public void render(SpriteBatch spriteBatch) {
         mStates.peek().render(spriteBatch);
     }
+
+
 }

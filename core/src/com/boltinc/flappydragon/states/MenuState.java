@@ -1,4 +1,4 @@
-package com.boltinc.flappydragon.States;
+package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,7 +22,8 @@ public class MenuState extends State {
 
     @Override
     public void update(float deltaTime) {
-
+        handleInput();
+        
     }
 
     @Override
@@ -31,5 +32,11 @@ public class MenuState extends State {
         spriteBatch.draw(background, 0, 0, FlappyDemo.WIDTH, FlappyDemo.HEIGHT);
         spriteBatch.draw(playButton, (FlappyDemo.WIDTH/2) - (playButton.getWidth()/2), (FlappyDemo.HEIGHT/2));
         spriteBatch.end();
+    }
+
+    @Override
+    public void dispose() {
+        background.dispose();
+        playButton.dispose();
     }
 }
