@@ -14,7 +14,6 @@ public class PlayState extends State{
 
     private Bird mBird;
     private Texture mPlayBackground;
-    private Tube mTube;
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
 
@@ -23,8 +22,10 @@ public class PlayState extends State{
         mBird = new Bird(50, 300);
         mPlayBackground = new Texture("background.png");
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
-        mTube = new Tube(100);
-
+        mTubes = new Array<Tube>();
+        for(int i=0; i <= TUBE_COUNT; i++) {
+            mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
+        }
     }
 
     @Override
@@ -37,6 +38,15 @@ public class PlayState extends State{
     public void update(float deltaTime) {
         handleInput();
         mBird.update(deltaTime);
+
+        //Make camera follow the bird
+        cam.position.x = mBird.getPosition().x + 80;        //offset camera a little
+        for(Tube tube: mTubes) {
+            if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.TUBE_WIDTH) {
+                tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
+            }
+        }
+        cam.update();
     }
 
     @Override
@@ -45,8 +55,10 @@ public class PlayState extends State{
         spriteBatch.begin();
         spriteBatch.draw(mPlayBackground, cam.position.x-(cam.viewportWidth/2), 0);
         spriteBatch.draw(mBird.getBirdTexture(), mBird.getPosition().x, mBird.getPosition().y);
-        spriteBatch.draw(mTube.getTopTube(), mTube.getPosTopTube().x, mTube.getPosTopTube().y);
-        spriteBatch.draw(mTube.getBottomTube(), mTube.getPosBotTube().x, mTube.getPosBotTube().y);
+        for(Tube tube: mTubes) {
+            spriteBatch.draw(tube.getTopTube(), tube.getPosTopTube().x, tube.getPosTopTube().y);
+            spriteBatch.draw(tube.getBottomTube(), tube.getPosBotTube().x, tube.getPosBotTube().y);
+        }
         spriteBatch.end();
     }
 
