@@ -3,6 +3,8 @@ package com.boltinc.flappydragon.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.boltinc.flappydragon.FlappyDemo;
 
 public class MenuState extends State {
@@ -20,7 +22,12 @@ public class MenuState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()){
-            mGameStateManager.setState(new PlayState(mGameStateManager));
+            Vector3 temp = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cam.unproject(temp);        //Translates point given in screen coordinates to world space. 
+            Rectangle playButtonBounds = new Rectangle(cam.position.x - playButton.getWidth()/2, cam.position.y, playButton.getWidth(), playButton.getHeight());
+            if(playButtonBounds.contains(temp.x, temp.y)) {
+                mGameStateManager.setState(new PlayState(mGameStateManager));
+            }
         }
     }
 
