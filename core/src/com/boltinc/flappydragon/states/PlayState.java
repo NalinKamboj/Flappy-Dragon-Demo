@@ -2,7 +2,9 @@ package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.boltinc.flappydragon.FlappyDemo;
@@ -15,11 +17,15 @@ public class PlayState extends State{
     private static final int GROUND_Y_OFFSET = -50;
 
     private Bird mBird;
+
     private Texture mPlayBackground;
-    private Texture ground;     //TODO add hitbox for ground! Priority: high
+    private Texture ground;
+    private Texture mainFontTexture;
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;
+
+    BitmapFont mainFont;
 
     public PlayState(GameStateManager gameStateManager) {
         super(gameStateManager);
@@ -30,6 +36,13 @@ public class PlayState extends State{
         ground = new Texture("ground.png");
         groundPos1 = new Vector2(cam.position.x - (cam.viewportWidth/2), GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - (cam.viewportWidth/2)) + ground.getWidth(),GROUND_Y_OFFSET);
+
+        mainFontTexture =  new Texture(Gdx.files.internal("main_font.png"), true);       //mip-mapping enabled for downscaling the font
+        mainFontTexture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
+        mainFont = new BitmapFont(Gdx.files.internal("main_font.fnt"), new TextureRegion(mainFontTexture), false);
+        mainFont.setColor(0, 0, 0, 255);
+        mainFont.setUseIntegerPositions(false);
+        mainFont.getData().setScale(0.75f, 0.75f);
 
         mTubes = new Array<Tube>();
         for(int i=0; i < TUBE_COUNT; i++) {
@@ -51,6 +64,7 @@ public class PlayState extends State{
 
         //Make camera follow the bird
         cam.position.x = mBird.getPosition().x + 80;        //offset camera a little
+
         for(int i =0; i<mTubes.size; i++) {         //TODO Use the normal Tube: mTubes for loop. Try getting rid of ITERATOR LIBGDX error which showed up...
             Tube tube = mTubes.get(i);
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
@@ -80,6 +94,7 @@ public class PlayState extends State{
 
         spriteBatch.draw(ground, groundPos1.x, groundPos1.y);           //TODO Ground is currently behind all tubes. Change it to appear on top of all tubes.
         spriteBatch.draw(ground, groundPos2.x, groundPos2.y);
+        mainFont.draw(spriteBatch, "Score: " + mainFontTexture.getWidth()/2, cam.position.x - (cam.viewportWidth/2) + 5, 25);       //+5 for little padding
 
         spriteBatch.end();
     }
@@ -97,6 +112,8 @@ public class PlayState extends State{
     public void dispose() {
         mPlayBackground.dispose();
         mBird.dispose();
+        mainFont.dispose();
+        mainFontTexture.dispose();
         for(Tube tube: mTubes)
             tube.dispose();
         System.out.println("Play State Disposed!");
