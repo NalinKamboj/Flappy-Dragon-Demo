@@ -25,10 +25,15 @@ public class PlayState extends State{
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;
 
+    private int score;
+
     BitmapFont mainFont;
 
     public PlayState(GameStateManager gameStateManager) {
         super(gameStateManager);
+
+        score = 0;
+
         mBird = new Bird(50, 300);
         mPlayBackground = new Texture("background.png");
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
@@ -45,8 +50,11 @@ public class PlayState extends State{
         mainFont.getData().setScale(0.75f, 0.75f);
 
         mTubes = new Array<Tube>();
-        for(int i=0; i < TUBE_COUNT; i++) {
-            mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
+        for(int i = 1; i <= TUBE_COUNT; i++) {
+//            if( i == 0)
+//                mTubes.add(new Tube(cam.viewportWidth/2 + TUBE_SPACING + Tube.TUBE_WIDTH));
+//            else
+                mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
     }
 
@@ -69,6 +77,7 @@ public class PlayState extends State{
             Tube tube = mTubes.get(i);
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
+                score+=1;
             }
             if(tube.collide(mBird.getBounds())){
                 mGameStateManager.setState(new GameOverState(mGameStateManager));
@@ -94,7 +103,7 @@ public class PlayState extends State{
 
         spriteBatch.draw(ground, groundPos1.x, groundPos1.y);           //TODO Ground is currently behind all tubes. Change it to appear on top of all tubes.
         spriteBatch.draw(ground, groundPos2.x, groundPos2.y);
-        mainFont.draw(spriteBatch, "Score: " + mainFontTexture.getWidth()/2, cam.position.x - (cam.viewportWidth/2) + 5, 25);       //+5 for little padding
+        mainFont.draw(spriteBatch, "Score: " + score, cam.position.x - (cam.viewportWidth/2) + 5, 25);       //+5 for little padding
 
         spriteBatch.end();
     }
