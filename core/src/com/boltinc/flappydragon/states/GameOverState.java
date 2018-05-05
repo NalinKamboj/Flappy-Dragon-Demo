@@ -45,5 +45,6 @@ public class GameOverState extends State {
     public void dispose() {
         background.dispose();
         gameOverTexture.dispose();
+        gameOverSound.dispose();
     }
 }
