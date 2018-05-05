@@ -14,9 +14,9 @@ public class GameOverState extends State {
     public GameOverState(GameStateManager gameStateManager) {
         super(gameStateManager);
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
         background = new Texture("background.png");
         gameOverTexture = new Texture("game_over.png");
-        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
         gameOverSound.play(1.0f);
     }
 

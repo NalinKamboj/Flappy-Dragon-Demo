@@ -1,6 +1,7 @@
 package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,7 +22,8 @@ public class PlayState extends State{
     private Texture mPlayBackground;
     private Texture ground;
     private Texture mainFontTexture;
-//    private Sound gameOverSound;          //This sound doesn't play in this class for some reason....weird.
+    private Sound scoreSound;
+    private Sound gameOverSound;          //This sound doesn't play in this class for some reason....weird.
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;
@@ -50,7 +52,8 @@ public class PlayState extends State{
         mainFont.setColor(0, 0, 0, 255);
         mainFont.setUseIntegerPositions(false);
         mainFont.getData().setScale(0.75f, 0.75f);
-//        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
+        scoreSound = Gdx.audio.newSound(Gdx.files.internal("sfx_score.ogg"));
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
 
         mTubes = new Array<Tube>();
         for(int i = 1; i <= TUBE_COUNT; i++) {
@@ -78,15 +81,16 @@ public class PlayState extends State{
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
                 score+=1;
+                scoreSound.play(0.5f);
             }
             if(tube.collide(mBird.getBounds())){
-//                gameOverSound.play(1.0f);
+                gameOverSound.play(1.0f);
                 mGameStateManager.setState(new GameOverState(mGameStateManager));
             }
         }
 
         if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET){
-//            gameOverSound.play(1.0f);
+            gameOverSound.play(1.0f);
             mGameStateManager.setState(new GameOverState(mGameStateManager));
         }
         cam.update();
@@ -132,6 +136,7 @@ public class PlayState extends State{
         mBird.dispose();
         mainFont.dispose();
         mainFontTexture.dispose();
+        scoreSound.dispose();
         for(Tube tube: mTubes)
             tube.dispose();
 //        System.out.println("Play State Disposed!");
