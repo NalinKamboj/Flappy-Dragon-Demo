@@ -21,6 +21,7 @@ public class PlayState extends State{
     private Texture mPlayBackground;
     private Texture ground;
     private Texture mainFontTexture;
+//    private Texture pixelFontTexture;
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;
@@ -28,6 +29,7 @@ public class PlayState extends State{
     private int score;
 
     BitmapFont mainFont;
+//    BitmapFont pixelFont;
 
     public PlayState(GameStateManager gameStateManager) {
         super(gameStateManager);
@@ -42,12 +44,21 @@ public class PlayState extends State{
         groundPos1 = new Vector2(cam.position.x - (cam.viewportWidth/2), GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - (cam.viewportWidth/2)) + ground.getWidth(),GROUND_Y_OFFSET);
 
+        //Main standard font
         mainFontTexture =  new Texture(Gdx.files.internal("main_font.png"), true);       //mip-mapping enabled for downscaling the font
         mainFontTexture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
         mainFont = new BitmapFont(Gdx.files.internal("main_font.fnt"), new TextureRegion(mainFontTexture), false);
         mainFont.setColor(0, 0, 0, 255);
         mainFont.setUseIntegerPositions(false);
         mainFont.getData().setScale(0.75f, 0.75f);
+
+//        //Pixelated Font...
+//        pixelFontTexture = new Texture(Gdx.files.internal("pixel_font.png"), true);
+//        pixelFontTexture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
+//        pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"), new TextureRegion(pixelFontTexture), false);
+//        pixelFont.setColor(0, 0, 0, 255);
+//        pixelFont.setUseIntegerPositions(false);
+//        pixelFont.getData().setScale(0.75f, 0.75f);
 
         mTubes = new Array<Tube>();
         for(int i = 1; i <= TUBE_COUNT; i++) {
@@ -73,7 +84,7 @@ public class PlayState extends State{
         //Make camera follow the bird
         cam.position.x = mBird.getPosition().x + 80;        //offset camera a little
 
-        for(int i =0; i<mTubes.size; i++) {         //TODO Use the normal Tube: mTubes for loop. Try getting rid of ITERATOR LIBGDX error which showed up...
+        for(int i =0; i<mTubes.size; i++) {         //TODO Use the normal Tube: mTubes for loop. Try getting rid of ITERATOR LIBGDX error which showed up... Priority: Very low
             Tube tube = mTubes.get(i);
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
@@ -94,6 +105,12 @@ public class PlayState extends State{
         spriteBatch.setProjectionMatrix(cam.combined);      //Updating our spritebatch to match the new orthographic camera
         spriteBatch.begin();
         spriteBatch.draw(mPlayBackground, cam.position.x-(cam.viewportWidth/2), 0);
+
+//        pixelFont.draw(spriteBatch, "3", cam.position.x - (pixelFont.getSpaceWidth()/2), cam.viewportHeight/2 + cam.viewportWidth/3);
+//        wait(5);
+//        Timer timer = new Timer();
+//        timer.delay(20000);
+
         spriteBatch.draw(mBird.getBirdTexture(), mBird.getPosition().x, mBird.getPosition().y);
 
         for(Tube tube: mTubes) {
@@ -101,7 +118,7 @@ public class PlayState extends State{
             spriteBatch.draw(tube.getBottomTube(), tube.getPosBotTube().x, tube.getPosBotTube().y);
         }
 
-        spriteBatch.draw(ground, groundPos1.x, groundPos1.y);           //TODO Ground is currently behind all tubes. Change it to appear on top of all tubes.
+        spriteBatch.draw(ground, groundPos1.x, groundPos1.y);
         spriteBatch.draw(ground, groundPos2.x, groundPos2.y);
         mainFont.draw(spriteBatch, "Score: " + score, cam.position.x - (cam.viewportWidth/2) + 5, 25);       //+5 for little padding
 
@@ -125,6 +142,6 @@ public class PlayState extends State{
         mainFontTexture.dispose();
         for(Tube tube: mTubes)
             tube.dispose();
-        System.out.println("Play State Disposed!");
+//        System.out.println("Play State Disposed!");
     }
 }
