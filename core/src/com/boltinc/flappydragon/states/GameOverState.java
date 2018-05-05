@@ -1,6 +1,7 @@
 package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boltinc.flappydragon.FlappyDemo;
@@ -8,12 +9,15 @@ import com.boltinc.flappydragon.FlappyDemo;
 public class GameOverState extends State {
     private Texture background;
     private Texture gameOverTexture;
+    private Sound gameOverSound;
 
     public GameOverState(GameStateManager gameStateManager) {
         super(gameStateManager);
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
         background = new Texture("background.png");
         gameOverTexture = new Texture("game_over.png");
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
+        gameOverSound.play(1.0f);
     }
 
     @Override

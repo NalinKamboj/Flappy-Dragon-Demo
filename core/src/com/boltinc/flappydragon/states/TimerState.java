@@ -15,10 +15,12 @@ public class TimerState extends State {
     private Calendar rightNow;
     int firstSecond, secondSecond, thirdSecond;
     private int displayNum;
+    private int firstMilli;
 
     private Texture mBackground;
     private Texture pixelFontTexture;
     private Sound timerSound;
+
 
     BitmapFont pixelFont;
 
@@ -29,6 +31,8 @@ public class TimerState extends State {
         secondSecond = firstSecond + 1;
         thirdSecond = secondSecond + 1;
         displayNum = 3;
+
+        firstMilli = Calendar.getInstance().get(14);
 
         System.out.println("SECOND "+firstSecond);
         System.out.println("SECOND "+secondSecond);
@@ -52,15 +56,16 @@ public class TimerState extends State {
 
     @Override
     public void update(float deltaTime) {
-        if(Calendar.getInstance().get(13) > thirdSecond)
+        if(Calendar.getInstance().get(13) > thirdSecond)            //TODO: Timer crashes if seconds are 58,59,60 or something like that in the end. FIX ASAP!
             mGameStateManager.setState(new PlayState(mGameStateManager));   //Fire up the game for real!
         else if(Calendar.getInstance().get(13) > secondSecond) {
             displayNum = 1;
-            timerSound.play(1.0f);
         } else if(Calendar.getInstance().get(13) > firstSecond){
             displayNum = 2;
-            timerSound.play(1.0f);
         }
+        if(Calendar.getInstance().get(Calendar.MILLISECOND) == (firstMilli + 1000)
+                || Calendar.getInstance().get(Calendar.MILLISECOND) == (firstMilli + 2000))
+            timerSound.play(1.0f);          //TODO: Sound doen't play yet...
     }
 
     @Override
@@ -78,5 +83,6 @@ public class TimerState extends State {
     public void dispose() {
         pixelFont.dispose();
         mBackground.dispose();
+        timerSound.dispose();
     }
 }

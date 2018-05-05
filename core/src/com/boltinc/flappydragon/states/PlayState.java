@@ -1,6 +1,7 @@
 package com.boltinc.flappydragon.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,7 +22,7 @@ public class PlayState extends State{
     private Texture mPlayBackground;
     private Texture ground;
     private Texture mainFontTexture;
-//    private Texture pixelFontTexture;
+    private Sound gameOverSound;
 
     private Array<Tube> mTubes;     //libGDX array. Not standard JAVA array
     private Vector2 groundPos1, groundPos2;
@@ -29,7 +30,6 @@ public class PlayState extends State{
     private int score;
 
     BitmapFont mainFont;
-//    BitmapFont pixelFont;
 
     public PlayState(GameStateManager gameStateManager) {
         super(gameStateManager);
@@ -51,20 +51,10 @@ public class PlayState extends State{
         mainFont.setColor(0, 0, 0, 255);
         mainFont.setUseIntegerPositions(false);
         mainFont.getData().setScale(0.75f, 0.75f);
-
-//        //Pixelated Font...
-//        pixelFontTexture = new Texture(Gdx.files.internal("pixel_font.png"), true);
-//        pixelFontTexture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
-//        pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"), new TextureRegion(pixelFontTexture), false);
-//        pixelFont.setColor(0, 0, 0, 255);
-//        pixelFont.setUseIntegerPositions(false);
-//        pixelFont.getData().setScale(0.75f, 0.75f);
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
 
         mTubes = new Array<Tube>();
         for(int i = 1; i <= TUBE_COUNT; i++) {
-//            if( i == 0)
-//                mTubes.add(new Tube(cam.viewportWidth/2 + TUBE_SPACING + Tube.TUBE_WIDTH));
-//            else
                 mTubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
     }
@@ -91,12 +81,15 @@ public class PlayState extends State{
                 score+=1;
             }
             if(tube.collide(mBird.getBounds())){
+                gameOverSound.play(1.0f);
                 mGameStateManager.setState(new GameOverState(mGameStateManager));
             }
         }
 
-        if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
+        if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET){
+            gameOverSound.play(1.0f);
             mGameStateManager.setState(new GameOverState(mGameStateManager));
+        }
         cam.update();
     }
 
@@ -143,5 +136,6 @@ public class PlayState extends State{
         for(Tube tube: mTubes)
             tube.dispose();
 //        System.out.println("Play State Disposed!");
+        gameOverSound.dispose();
     }
 }
