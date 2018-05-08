@@ -86,13 +86,13 @@ public class PlayState extends State{
             }
             if(tube.collide(mBird.getBounds())){
                 gameOverSound.play(1.0f);
-                mGameStateManager.setState(new GameOverState(mGameStateManager));
+                mGameStateManager.setState(new GameOverState(mGameStateManager, score));
             }
         }
 
         if(mBird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET){
             gameOverSound.play(1.0f);
-            mGameStateManager.setState(new GameOverState(mGameStateManager));
+            mGameStateManager.setState(new GameOverState(mGameStateManager, score));
         }
         cam.update();
     }
@@ -129,6 +129,10 @@ public class PlayState extends State{
         if (cam.position.x - (cam.viewportWidth/2) > groundPos2.x + ground.getWidth()){
             groundPos2.add(ground.getWidth()*2, 0);
         }
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override

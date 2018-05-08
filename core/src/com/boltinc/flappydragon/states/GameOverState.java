@@ -10,9 +10,11 @@ public class GameOverState extends State {
     private Texture background;
     private Texture gameOverTexture;
     private Sound gameOverSound;
+    private int SCORE;
 
-    public GameOverState(GameStateManager gameStateManager) {
+    public GameOverState(GameStateManager gameStateManager, int score) {
         super(gameStateManager);
+        SCORE = score;
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("metal_hit.ogg"));
         background = new Texture("background.png");
@@ -23,7 +25,7 @@ public class GameOverState extends State {
     @Override
     protected void handleInput() {
         if (Gdx.input.justTouched()){
-            mGameStateManager.setState(new MenuState(mGameStateManager));
+            mGameStateManager.setState(new HighScoreState(mGameStateManager, SCORE));
         }
     }
 

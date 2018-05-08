@@ -54,7 +54,7 @@ public class Bird {
     }
 
     public void jump() {
-        mVelocity.y = 250;
+        mVelocity.y = 280;
         flapSound.play(0.5f);
     }
 
