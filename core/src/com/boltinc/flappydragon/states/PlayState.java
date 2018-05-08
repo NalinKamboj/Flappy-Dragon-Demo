@@ -81,6 +81,7 @@ public class PlayState extends State{
             if(cam.position.x - (cam.viewportWidth/2) > tube.getPosTopTube().x + tube.getTopTube().getWidth()) {
                 tube.reposition(tube.getPosTopTube().x + ((Tube.TUBE_WIDTH + TUBE_SPACING)* TUBE_COUNT));
                 score+=1;
+                mBird.addSpeed();
                 scoreSound.play(0.5f);
             }
             if(tube.collide(mBird.getBounds())){

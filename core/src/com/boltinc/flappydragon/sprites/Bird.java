@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Bird {
-    private static final int MOVEMENT = 100;
+    private int MOVEMENT;
     private static final int GRAVITY = -15;
     private Vector3 mPosition;
     private Vector3 mVelocity;
@@ -20,6 +20,7 @@ public class Bird {
     private Sound flapSound;
 
     public Bird(int x, int y) {
+        MOVEMENT = 100;
         mPosition = new Vector3(x, y, 0);
         mVelocity = new Vector3(0,0,0);
         animationTexture = new Texture("bird_animation.png");
@@ -42,6 +43,10 @@ public class Bird {
 
     public Vector3 getPosition() {
         return mPosition;
+    }
+
+    public void addSpeed() {
+        MOVEMENT++;
     }
 
     public TextureRegion getBirdTexture() {
