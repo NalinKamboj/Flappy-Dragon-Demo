@@ -29,7 +29,7 @@ public class HighScoreState extends State {
         pixelFontTexture = new Texture(Gdx.files.internal("pixel_font.png"), true);
         pixelFontTexture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
         pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"), new TextureRegion(pixelFontTexture), false);
-        pixelFont.setColor(200, 200, 0, 255);
+        pixelFont.setColor(255, 255, 0, 255);
         pixelFont.setUseIntegerPositions(false);
         pixelFont.getData().setScale(0.45f, 0.45f);
 

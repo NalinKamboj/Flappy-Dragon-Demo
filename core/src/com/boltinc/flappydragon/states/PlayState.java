@@ -131,7 +131,7 @@ public class PlayState extends State{
         }
     }
 
-    public int getScore() {
+    public int getScore() {     //TODO: Check....never using this function so maybe get rid of it?
         return score;
     }
 

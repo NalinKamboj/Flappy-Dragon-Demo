@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Random;
 
 public class Tube {
-    private Texture topTube, bottomTube;        //TODO Use static textures to save memory.
+    private Texture topTube, bottomTube;        //TODO Use static textures to save memory. Priority: LOW
     private Vector2 posTopTube, posBotTube;
     private Random randomPos;
     private Rectangle boundsTop, boundsBot;
